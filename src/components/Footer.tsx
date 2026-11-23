@@ -73,16 +73,16 @@ export default function Footer() {
     const show = inView ? "animate-fade-up" : "opacity-0";
 
     return (
-        <footer id="contact" className="relative overflow-hidden bg-brand-footer">
+        <footer id="contact" className="relative overflow-hidden bg-brand-dark">
             <div ref={ref} className={`relative ${PAGE_GUTTER}`}>
                 <div className={`flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between lg:py-12 ${show}`}>
                     <img
-                        src="/images/Logo2.png"
+                        src="/images/Logo.png"
                         alt="True Words Media"
                         className="h-24 w-24 rounded-full object-cover lg:h-28 lg:w-28"
                     />
                     <div className="max-w-md lg:mr-[5%] xl:max-w-lg">
-                        <p className="font-body text-[12px] leading-relaxed text-brand-black/70 xl:text-[14px]">
+                        <p className="font-body text-[12px] leading-relaxed text-white/70 xl:text-[14px]">
                             {INTRO}
                         </p>
                         <a
@@ -95,14 +95,14 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <hr className="border-brand-black/10" />
+                <hr className="border-white/15" />
 
                 <div className="grid gap-10 py-10 sm:grid-cols-2 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-[minmax(0,32%)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,24%)] lg:gap-8 lg:py-12">
                     <div className={`[animation-delay:150ms] ${show}`}>
-                        <h3 className="font-body text-[18px] font-medium text-brand-black xl:text-[22px]">
+                        <h3 className="font-body text-[18px] font-medium text-white xl:text-[22px]">
                             About True Words Media
                         </h3>
-                        <p className="mt-4 font-body text-[12px] leading-relaxed text-brand-black/70 xl:text-[13px]">
+                        <p className="mt-4 font-body text-[12px] leading-relaxed text-white/70 xl:text-[13px]">
                             {ABOUT}
                         </p>
                         <div className="mt-6 flex items-center gap-6">
@@ -113,7 +113,7 @@ export default function Footer() {
                                     target="_blank"
                                     rel="noreferrer"
                                     aria-label={s.name}
-                                    className="text-brand-black transition-colors hover:text-brand-brown"
+                                    className="text-white transition-colors hover:text-brand-gold"
                                 >
                                     <SocialIcon name={s.name} className="h-4 w-4" />
                                 </a>
@@ -126,7 +126,7 @@ export default function Footer() {
                             key={col.title}
                             className={`lg:pl-[25%] ${i === 0 ? "[animation-delay:250ms]" : "[animation-delay:350ms]"} ${show}`}
                         >
-                            <h4 className="font-body text-[12px] font-bold text-brand-black xl:text-[14px]">
+                            <h4 className="font-body text-[12px] font-bold text-white xl:text-[14px]">
                                 {col.title}
                             </h4>
                             <ul className="mt-5 space-y-4">
@@ -135,7 +135,7 @@ export default function Footer() {
                                         <a
                                             href={link.href}
                                             onClick={(e) => handleLink(e, link.href)}
-                                            className="font-body text-[11px] text-brand-black transition-colors hover:text-brand-brown xl:text-[13px]"
+                                            className="font-body text-[11px] text-white transition-colors hover:text-brand-gold xl:text-[13px]"
                                         >
                                             {link.label}
                                         </a>
@@ -146,9 +146,9 @@ export default function Footer() {
                     ))}
                 </div>
 
-                <hr className="border-brand-black/10" />
+                <hr className="border-white/15" />
 
-                <p className="py-5 text-center font-body text-[11px] text-brand-black xl:text-[13px]">
+                <p className="py-5 text-center font-body text-[11px] text-white xl:text-[13px]">
                     © Copyright {new Date().getFullYear()}, All Rights Reserved
                 </p>
             </div>

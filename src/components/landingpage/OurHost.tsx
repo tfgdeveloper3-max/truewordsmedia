@@ -34,7 +34,7 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
         <section id="our-hosts" className={`py-16 lg:py-20 ${PAGE_GUTTER}`}>
             <div
                 ref={ref}
-                className="grid items-center gap-8 rounded-[20px] bg-brand-olive p-4 text-white sm:p-5 md:grid-cols-[minmax(0,40%)_1fr] md:gap-8 lg:grid-cols-[minmax(0,32%)_1fr_auto] lg:gap-10 xl:gap-14"
+                className="grid items-center gap-8 rounded-[20px] bg-brand-dark p-4 text-white sm:p-5 md:grid-cols-[minmax(0,40%)_1fr] md:gap-8 lg:grid-cols-[minmax(0,32%)_1fr_auto] lg:gap-10 xl:gap-14"
             >
                 <div className={`overflow-hidden rounded-[16px] border-2 border-white ${show}`}>
                     <img
@@ -65,7 +65,7 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
                             </span>
                         </a>
 
-                        <span className="translate-y-3 -rotate-3 font-capetown text-[30px] leading-none xl:text-[38px]">
+                        <span className="translate-y-3 -rotate-0 capetown-font text-[30px] leading-none xl:text-[38px]">
                             {host.signature}
                         </span>
                     </div>

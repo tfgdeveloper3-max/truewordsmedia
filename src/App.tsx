@@ -9,6 +9,7 @@ import Reviews from "./components/landingpage/Reviews";
 import WhatWeDo from "./components/landingpage/WhatweDo";
 import Team from "./components/landingpage/Team";
 import Footer from "./components/Footer";
+import PodcastPlayer from "./components/landingpage/PodcastPlayer";
 
 export default function App() {
   useEffect(() => initSmoothScroll(), []);
@@ -20,6 +21,7 @@ export default function App() {
       <OurHost />
       <LatestPodcast />
       <ComingSoon />
+      <PodcastPlayer />
       <Reviews />
       <WhatWeDo />
       <Team />

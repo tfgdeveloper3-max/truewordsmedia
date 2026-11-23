@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const PLAY_EVENT = "podcast:play";
+export const PLAY_EVENT = "podcast:play";
 
 const formatTime = (sec: number) => {
     if (!Number.isFinite(sec) || sec < 0) return "00:00";

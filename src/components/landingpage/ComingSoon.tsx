@@ -34,7 +34,7 @@ export default function ComingSoon({
                 className="@container relative flex flex-col items-center overflow-hidden rounded-[20px] bg-brand-olive px-6 pt-10 text-white md:block md:aspect-[909/397] md:p-0"
             >
                 <p
-                    className={`font-capetown text-[34px] leading-none md:absolute md:left-1/2 md:top-[6%] md:-translate-x-1/2 md:text-[3.6cqw] ${reveal(0)}`}
+                    className={`capetown-font text-[34px] leading-none md:absolute md:left-1/2 md:top-[5%] md:-translate-x-1/2 md:text-[4.6cqw] ${reveal(0)}`}
                 >
                     Coming Soon
                 </p>
@@ -70,7 +70,7 @@ export default function ComingSoon({
                     <div
                         className={`text-center md:absolute md:left-[12.5%] md:top-[74%] md:-translate-x-1/2 ${reveal(500)}`}
                     >
-                        <p className="font-capetown text-xl leading-none md:text-[2.1cqw]">Hosted By</p>
+                        <p className="capetown-font text-xl leading-none md:text-[2.7cqw]">Hosted By</p>
                         <p className="mt-1 font-heading text-xl uppercase sm:text-2xl md:whitespace-nowrap tracking-[0.03em] md:mt-[0.4cqw] md:text-[2.6cqw]">
                             {host}
                         </p>
@@ -78,7 +78,7 @@ export default function ComingSoon({
                     <div
                         className={`text-center md:absolute md:left-[88%] md:top-[74%] md:-translate-x-1/2 ${reveal(600)}`}
                     >
-                        <p className="font-capetown text-xl leading-none md:text-[2.1cqw]">Guest Star</p>
+                        <p className="capetown-font text-xl leading-none md:text-[2.7cqw]">Guest Star</p>
                         <p className="mt-1 font-heading text-xl uppercase sm:text-2xl md:whitespace-nowrap tracking-[0.03em] md:mt-[0.4cqw] md:text-[2.6cqw]">
                             {guest}
                         </p>
