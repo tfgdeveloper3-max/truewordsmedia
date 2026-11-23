@@ -1,0 +1,87 @@
+import { scrollToSection } from "@/lib/smoothScroll";
+import { useInView } from "@/lib/useView";
+import { ArrowIcon, PAGE_GUTTER } from "../Navbar";
+import { HOST, type Host } from "@/data/Host";
+
+const DoubleCheck = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2.2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="h-4 w-4 shrink-0"
+    aria-hidden="true"
+  >
+    <path d="M2 12.5l4.5 4.5L15 8.5" />
+    <path d="M11 16l1 1 9-9.5" />
+  </svg>
+);
+
+export default function OurHost({ host = HOST }: { host?: Host }) {
+  const { ref, inView } = useInView<HTMLDivElement>(0.25);
+  const show = inView ? "animate-fade-up" : "opacity-0";
+
+  const handleMore = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (host.moreLink.startsWith("#")) {
+      e.preventDefault();
+      scrollToSection(host.moreLink);
+    }
+  };
+
+  return (
+    <section id="our-hosts" className={`py-16 lg:py-20 ${PAGE_GUTTER}`}>
+      <div
+        ref={ref}
+        className="grid items-center gap-8 rounded-[20px] bg-brand-olive p-4 text-white sm:p-5 lg:grid-cols-[minmax(0,32%)_1fr_auto] lg:gap-10 xl:gap-14"
+      >
+        <div className={`overflow-hidden rounded-[16px] border-2 border-white ${show}`}>
+          <img
+            src={host.image}
+            alt={host.name}
+            loading="lazy"
+            className="aspect-[288/212] w-full object-cover"
+          />
+        </div>
+
+        <div className={`px-2 [animation-delay:150ms] lg:px-0 ${show}`}>
+          <h2 className="font-heading text-[30px] uppercase leading-none tracking-[0.03em] sm:text-[36px] xl:text-[44px]">
+            Hi, I&apos;m {host.name}
+          </h2>
+          <p className="mt-3 max-w-[34rem] font-body text-[13px] leading-relaxed text-white/90 xl:text-[15px]">
+            {host.bio}
+          </p>
+
+          <div className="mt-6 flex flex-wrap items-end gap-x-10 gap-y-4">
+            <a
+              href={host.moreLink}
+              onClick={handleMore}
+              className="group flex items-center gap-4 rounded-full bg-brand-button py-2.5 pl-5 pr-2.5 font-body text-[13px] font-medium uppercase tracking-wide text-white transition-colors hover:bg-brand-brown"
+            >
+              More About Me
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-gold text-brand-black transition-transform duration-300 group-hover:rotate-45">
+                <ArrowIcon className="h-3.5 w-3.5" />
+              </span>
+            </a>
+
+            <span className="translate-y-3 -rotate-3 font-capetown text-[30px] leading-none xl:text-[38px]">
+              {host.signature}
+            </span>
+          </div>
+        </div>
+
+        <ul
+          className={`space-y-4 border-white/50 px-2 pb-2 font-body text-[13px] font-semibold [animation-delay:300ms] lg:self-center lg:border-l lg:py-6 lg:pl-8 lg:pr-6 xl:pr-10 xl:text-[14px] ${show}`}
+        >
+          {host.highlights.map((item, i) => (
+            <li key={i} className="flex items-center gap-3">
+              <DoubleCheck />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-brown: #a4512a;
+  --color-brand-black: #1c170d;
+  --color-brand-olive: #5d5234;
+  --color-brand-white: #ffffff;
+  --color-brand-button: #af5633;
+  --color-brand-dark: #1c150d;
+  --color-brand-cream: #fbf2e3;
+  --color-brand-gold: #e7c387;
+  --color-brand-nav: #1f1a14;
+  --color-brand-taupe: #a39c88;
+  --color-brand-star: #f0a81c;
+
+  --font-body: "Montserrat", sans-serif;
+  --font-heading: "Scaffold Heavy", "Impact", "Arial Narrow", sans-serif;
+  --font-capetown: "Capetown", serif;
+  --font-prosper: "Fair Prosper", cursive;
+  --font-deadjim: "Deadjim", cursive;
+}
+
+@theme {
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-down: fade-down 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-zoom-in: zoom-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-from-right: slide-from-right 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-from-left: slide-from-left 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes slide-from-right {
+    from {
+      opacity: 0;
+      transform: translateX(120px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-from-left {
+    from {
+      opacity: 0;
+      transform: translateX(-120px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-down {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes zoom-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+}
+
+html,
+body {
+  background-color: var(--color-brand-cream);
+  color: var(--color-brand-black);
+  font-family: var(--font-body);
+}
+
+.font-heading {
+  font-synthesis: none;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
