@@ -4,7 +4,6 @@ import { SocialIcon, type SocialLink } from "../components/SocialIcon";
 import { scrollToSection } from "@/lib/smoothScroll";
 import { useInView } from "@/lib/useView";
 
-
 const INTRO =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dictum aliquet accumsan porta lectus ridiculus in mattis. Netus sodales in volutpat ullamcorper amet adipiscing fermentum.";
 
@@ -98,7 +97,7 @@ export default function Footer() {
 
                 <hr className="border-brand-black/10" />
 
-                <div className="grid gap-10 py-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,32%)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,24%)] lg:gap-8 lg:py-12">
+                <div className="grid gap-10 py-10 sm:grid-cols-2 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-[minmax(0,32%)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,24%)] lg:gap-8 lg:py-12">
                     <div className={`[animation-delay:150ms] ${show}`}>
                         <h3 className="font-body text-[18px] font-medium text-brand-black xl:text-[22px]">
                             About True Words Media
