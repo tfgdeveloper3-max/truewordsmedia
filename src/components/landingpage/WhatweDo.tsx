@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "@/lib/useView";
 import { PAGE_GUTTER } from "../Navbar";
 
@@ -24,6 +24,7 @@ export const SERVICES: Service[] = [
         duration: "60–180s",
         platforms: ["YouTube", "Website", "LinkedIn"],
         layout: "wide",
+        video: "/videos/Brand-Film.mp4",
     },
     {
         title: "Reels & Shorts",
@@ -33,6 +34,7 @@ export const SERVICES: Service[] = [
         duration: "15–60s",
         platforms: ["Instagram", "TikTok", "Shorts"],
         layout: "tall",
+        video: "/videos/Reel.mp4",
     },
     {
         title: "Trailers & Teasers",
@@ -42,6 +44,7 @@ export const SERVICES: Service[] = [
         duration: "30–90s",
         platforms: ["YouTube", "Meta"],
         layout: "regular",
+        video: "/videos/Video-Trailer.mp4",
     },
     {
         title: "Social Ads",
@@ -51,6 +54,7 @@ export const SERVICES: Service[] = [
         duration: "6–30s",
         platforms: ["Meta Ads", "TikTok Ads"],
         layout: "regular",
+        video: "/videos/Social-Add.mp4",
     },
 ];
 
@@ -61,13 +65,22 @@ const DELAYS = [
     "[animation-delay:600ms]",
 ];
 
-const LAYOUT_CLASSES: Record<Service["layout"], { card: string; media: string }> = {
-    wide: { card: "sm:col-span-2", media: "aspect-video" },
-    tall: {
-        card: "lg:row-span-2",
-        media: "aspect-[4/5] sm:aspect-[9/16] lg:aspect-auto lg:min-h-[320px] lg:flex-1",
+const LAYOUT_CLASSES: Record<Service["layout"], { card: string; desc: string; title: string }> = {
+    wide: {
+        card: "w-[85%] sm:w-[48%] md:w-[44%] lg:col-span-2 lg:row-span-2",
+        desc: "",
+        title: "lg:text-[30px] xl:text-[36px]",
     },
-    regular: { card: "", media: "aspect-video" },
+    tall: {
+        card: "w-[62%] sm:w-[30%] md:w-[27%] lg:row-span-2",
+        desc: "lg:hidden xl:line-clamp-3",
+        title: "",
+    },
+    regular: {
+        card: "w-[85%] sm:w-[48%] md:w-[44%]",
+        desc: "lg:hidden 2xl:line-clamp-2",
+        title: "",
+    },
 };
 
 function PlayIcon({ className = "" }: { className?: string }) {
@@ -80,7 +93,7 @@ function PlayIcon({ className = "" }: { className?: string }) {
 
 function ReelSideIcons() {
     return (
-        <div className="absolute bottom-10 right-3 flex flex-col items-center gap-3 text-brand-cream/90">
+        <div className="absolute right-3 top-1/2 flex -translate-y-1/2 flex-col items-center gap-3 text-brand-cream/90">
             {[
                 "M12 21s-7.5-4.6-9.5-9.2C1.2 8.6 3.2 5 6.6 5c2 0 3.4 1.1 4.4 2.5C12 6.1 13.4 5 15.4 5c3.4 0 5.4 3.6 4.1 6.8C19.5 16.4 12 21 12 21Z",
                 "M4 5h16v11H8l-4 4V5Z",
@@ -96,7 +109,7 @@ function ReelSideIcons() {
 
 function Equalizer() {
     return (
-        <div className="absolute bottom-10 left-3 flex h-4 items-end gap-[3px]" aria-hidden>
+        <div className="absolute left-3 top-12 flex h-4 items-end gap-[3px]" aria-hidden>
             {["[animation-delay:0ms]", "[animation-delay:200ms]", "[animation-delay:400ms]", "[animation-delay:100ms]"].map(
                 (d) => (
                     <span key={d} className={`h-full w-[3px] origin-bottom rounded-full bg-brand-gold animate-eq ${d}`} />
@@ -107,102 +120,140 @@ function Equalizer() {
 }
 
 function ServiceCard({ service, index, className }: { service: Service; index: number; className: string }) {
+    const cardRef = useRef<HTMLElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const barRef = useRef<HTMLSpanElement>(null);
+    const [playing, setPlaying] = useState(false);
     const layout = LAYOUT_CLASSES[service.layout];
     const isTall = service.layout === "tall";
 
     const play = () => videoRef.current?.play().catch(() => { });
     const pause = () => {
-        if (!videoRef.current) return;
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
+        const v = videoRef.current;
+        if (!v) return;
+        v.pause();
+        v.currentTime = 0;
+        if (barRef.current) barRef.current.style.width = "0%";
     };
+
+    const onTimeUpdate = () => {
+        const v = videoRef.current;
+        const bar = barRef.current;
+        if (!v || !bar || !v.duration) return;
+        bar.style.width = `${(v.currentTime / v.duration) * 100}%`;
+    };
+
+    useEffect(() => {
+        const el = cardRef.current;
+        const v = videoRef.current;
+        if (!el || !v || !window.matchMedia("(hover: none)").matches) return;
+
+        const io = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    v.play().catch(() => { });
+                } else {
+                    v.pause();
+                    v.currentTime = 0;
+                }
+            },
+            { threshold: 0.6 },
+        );
+        io.observe(el);
+        return () => io.disconnect();
+    }, []);
 
     return (
         <article
+            ref={cardRef}
             onMouseEnter={play}
             onMouseLeave={pause}
-            className={`group flex flex-col overflow-hidden rounded-[12px] border border-brand-gold/15 bg-brand-nav transition-colors duration-300 hover:border-brand-gold/50 ${layout.card} ${className}`}
+            className={`group relative h-[340px] shrink-0 snap-start overflow-hidden rounded-[12px] border border-brand-gold/15 bg-brand-black transition-colors duration-300 hover:border-brand-gold/50 sm:h-[360px] md:h-[380px] lg:h-auto lg:w-auto ${layout.card} ${className}`}
         >
-            <div className={`relative w-full overflow-hidden bg-brand-black ${layout.media}`}>
-                {service.video ? (
-                    <video
-                        ref={videoRef}
-                        src={service.video}
-                        poster={service.poster}
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    />
-                ) : service.poster ? (
-                    <img
-                        src={service.poster}
-                        alt=""
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    />
-                ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-brand-olive via-brand-black to-brand-brown/70">
-                        <div className="absolute inset-0 bg-[radial-gradient(90%_70%_at_25%_15%,rgba(231,195,135,0.22),transparent_60%)]" />
-                        <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(var(--color-brand-cream)_1px,transparent_1px),linear-gradient(90deg,var(--color-brand-cream)_1px,transparent_1px)] [background-size:32px_32px]" />
-                    </div>
-                )}
-
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-black/80 via-transparent to-brand-black/40" />
-
-                <div className="absolute inset-x-3 top-3 flex items-center justify-between font-body text-[10px] font-medium uppercase tracking-[0.12em] text-brand-cream xl:text-[11px]">
-                    <span className="flex items-center gap-1.5 rounded-full bg-brand-black/60 px-2.5 py-1 backdrop-blur">
-                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-button" />
-                        {service.format}
-                    </span>
-                    <span className="rounded-full bg-brand-black/60 px-2.5 py-1 backdrop-blur">{service.duration}</span>
+            {service.video ? (
+                <video
+                    ref={videoRef}
+                    src={`${service.video}#t=0.1`}
+                    poster={service.poster}
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={`${service.title} sample`}
+                    onPlay={() => setPlaying(true)}
+                    onPause={() => setPlaying(false)}
+                    onTimeUpdate={onTimeUpdate}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                />
+            ) : service.poster ? (
+                <img
+                    src={service.poster}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                />
+            ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-olive via-brand-black to-brand-brown/70">
+                    <div className="absolute inset-0 bg-[radial-gradient(90%_70%_at_25%_15%,rgba(231,195,135,0.22),transparent_60%)]" />
                 </div>
+            )}
 
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full border border-brand-gold/50 bg-brand-cream/10 text-brand-cream backdrop-blur transition-all duration-300 group-hover:scale-110 group-hover:border-brand-gold group-hover:bg-brand-gold group-hover:text-brand-dark xl:h-14 xl:w-14">
-                        <PlayIcon className="ml-0.5 h-5 w-5" />
-                    </span>
-                </div>
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-black/95 via-brand-black/30 to-brand-black/40" />
 
-                {isTall && (
-                    <>
-                        <ReelSideIcons />
-                        <Equalizer />
-                    </>
-                )}
-
-                <div className="absolute inset-x-3 bottom-3 flex items-center gap-2 font-body text-[10px] text-brand-cream/80">
-                    <span>00:00</span>
-                    <span className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-brand-cream/20">
-                        <span className="absolute inset-y-0 left-0 w-[12%] bg-brand-gold transition-[width] duration-[2500ms] ease-linear group-hover:w-full" />
-                    </span>
-                </div>
+            <div className="absolute inset-x-3 top-3 flex items-center justify-between font-body text-[10px] font-medium uppercase tracking-[0.12em] text-brand-cream xl:text-[11px]">
+                <span className="flex items-center gap-1.5 rounded-full bg-brand-black/60 px-2.5 py-1 backdrop-blur">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-button" />
+                    {service.format}
+                </span>
+                <span className="rounded-full bg-brand-black/60 px-2.5 py-1 backdrop-blur">{service.duration}</span>
             </div>
 
-            <div className="flex flex-col gap-3 p-5 xl:p-6">
-                <div className="flex items-baseline gap-3">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <span
+                    className={`flex h-11 w-11 items-center justify-center rounded-full border border-brand-gold/50 bg-brand-cream/10 text-brand-cream backdrop-blur transition-all duration-300 xl:h-14 xl:w-14 ${playing ? "scale-75 opacity-0" : "opacity-100"
+                        }`}
+                >
+                    <PlayIcon className="ml-0.5 h-5 w-5" />
+                </span>
+            </div>
+
+            {isTall && (
+                <>
+                    <ReelSideIcons />
+                    <Equalizer />
+                </>
+            )}
+
+            <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4 xl:gap-2.5 xl:p-5">
+                <div className="flex items-baseline gap-2.5">
                     <span className="font-body text-[10px] font-semibold text-brand-gold xl:text-[12px]">
                         {String(index + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="font-heading text-[20px] uppercase leading-none tracking-[0.03em] text-brand-cream xl:text-[26px]">
+                    <h3
+                        className={`font-heading text-[18px] uppercase leading-none tracking-[0.03em] text-brand-cream sm:text-[20px] xl:text-[22px] ${layout.title}`}
+                    >
                         {service.title}
                     </h3>
                 </div>
-                <p className="max-w-[30rem] font-body text-[12px] leading-relaxed text-brand-cream/70 xl:text-[14px]">
+                <p
+                    className={`line-clamp-2 max-w-[30rem] font-body text-[12px] leading-relaxed text-brand-cream/75 xl:text-[13px] ${layout.desc}`}
+                >
                     {service.description}
                 </p>
-                <ul className="mt-1 flex flex-wrap gap-2">
+                <ul className="flex flex-wrap gap-1.5">
                     {service.platforms.map((p) => (
                         <li
                             key={p}
-                            className="rounded-full border border-brand-taupe/40 px-2.5 py-1 font-body text-[10px] uppercase tracking-[0.08em] text-brand-taupe transition-colors group-hover:border-brand-gold/40 group-hover:text-brand-gold xl:text-[11px]"
+                            className="rounded-full border border-brand-cream/25 bg-brand-black/40 px-2 py-0.5 font-body text-[9px] uppercase tracking-[0.08em] text-brand-cream/80 backdrop-blur transition-colors group-hover:border-brand-gold/50 group-hover:text-brand-gold xl:text-[10px]"
                         >
                             {p}
                         </li>
                     ))}
                 </ul>
             </div>
+
+            <span className="absolute inset-x-0 bottom-0 h-[3px] bg-brand-cream/10">
+                <span ref={barRef} className="absolute inset-y-0 left-0 w-0 bg-brand-gold transition-[width] duration-300 ease-linear" />
+            </span>
         </article>
     );
 }
@@ -214,25 +265,23 @@ export default function WhatWeDo({ services = SERVICES }: { services?: Service[]
     const show = inView ? "animate-fade-up" : "opacity-0";
 
     return (
-        <section id="visual-marketing" className={`py-12 lg:py-16 ${PAGE_GUTTER}`}>
+        <section id="visual-marketing" className={`py-8 lg:py-12 ${PAGE_GUTTER}`}>
             <div
                 ref={ref}
-                className="relative overflow-hidden rounded-[16px] bg-brand-dark px-6 py-10 font-body text-brand-cream sm:px-10 lg:px-[4.5%] lg:py-14"
+                className="relative overflow-hidden rounded-[16px] bg-brand-dark px-6 py-8 font-body text-brand-cream sm:px-10 lg:px-[4.5%] lg:py-10"
             >
                 <div className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-brand-brown/25 blur-3xl" />
 
-                <div className={`relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between ${show}`}>
+                <div className={`relative flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between ${show}`}>
                     <div>
                         <div className="flex items-center gap-3">
                             <span className="h-px w-10 bg-brand-gold" />
-                            <span className="capetown-font text-[26px] leading-none text-brand-gold xl:text-[32px]">
+                            <span className="capetown-font text-[22px] leading-none text-brand-gold sm:text-[26px] xl:text-[30px]">
                                 What We Do
                             </span>
                         </div>
-                        <h2 className="mt-4 font-heading text-[40px] uppercase leading-[0.95] tracking-[0.03em] text-brand-cream sm:text-[48px] xl:text-[64px]">
-                            Visual
-                            <br />
-                            <span className="text-brand-gold">Marketing</span>
+                        <h2 className="mt-3 font-heading text-[34px] uppercase leading-[0.95] tracking-[0.03em] text-brand-cream sm:text-[42px] lg:text-[48px] xl:text-[56px]">
+                            Visual <span className="text-brand-gold">Marketing</span>
                         </h2>
                     </div>
                     <p className="max-w-md font-body text-[13px] leading-relaxed text-brand-cream/70 xl:text-[15px]">
@@ -241,7 +290,11 @@ export default function WhatWeDo({ services = SERVICES }: { services?: Service[]
                     </p>
                 </div>
 
-                <div className="relative mt-10 grid gap-5 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-6">
+                <p className={`relative mt-5 font-body text-[10px] uppercase tracking-[0.14em] text-brand-taupe lg:hidden ${show}`}>
+                    Swipe to explore →
+                </p>
+
+                <div className="relative -mx-6 mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-6 pb-1 [scrollbar-width:none] sm:-mx-10 sm:scroll-px-10 sm:px-10 [&::-webkit-scrollbar]:hidden lg:mx-0 lg:mt-8 lg:grid lg:h-[460px] lg:grid-cols-4 lg:grid-rows-2 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 xl:h-[520px] 2xl:h-[580px]">
                     {services.map((s, i) => (
                         <ServiceCard
                             key={s.title}
@@ -253,15 +306,15 @@ export default function WhatWeDo({ services = SERVICES }: { services?: Service[]
                 </div>
 
                 <div
-                    className={`relative mt-10 flex flex-col gap-5 border-t border-brand-gold/15 pt-8 sm:flex-row sm:items-center sm:justify-between lg:mt-12 ${show} [animation-delay:750ms]`}
+                    className={`relative mt-6 flex flex-col gap-4 border-t border-brand-gold/15 pt-5 sm:flex-row sm:items-center sm:justify-between lg:mt-8 lg:pt-6 ${show} [animation-delay:750ms]`}
                 >
-                    <ol className="flex flex-wrap items-center gap-x-3 gap-y-2 font-body text-[11px] font-medium uppercase tracking-[0.14em] text-brand-taupe xl:text-[12px]">
+                    <ol className="flex flex-wrap items-center gap-x-3 gap-y-2 font-body text-[10px] font-medium uppercase tracking-[0.14em] text-brand-taupe sm:text-[11px] xl:text-[12px]">
                         {PROCESS.map((step, i) => (
                             <li key={step} className="flex items-center gap-3">
                                 <span>
                                     <span className="text-brand-gold">{String(i + 1).padStart(2, "0")}</span> {step}
                                 </span>
-                                {i < PROCESS.length - 1 && <span className="h-px w-5 bg-brand-taupe/40" />}
+                                {i < PROCESS.length - 1 && <span className="h-px w-4 bg-brand-taupe/40 sm:w-5" />}
                             </li>
                         ))}
                     </ol>
