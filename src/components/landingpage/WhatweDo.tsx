@@ -197,7 +197,10 @@ function ServiceCard({ service, index, className }: { service: Service; index: n
                 </div>
             )}
 
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-black/95 via-brand-black/30 to-brand-black/40" />
+            <div
+                className={`pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-black/95 via-brand-black/30 to-brand-black/40 transition-opacity duration-500 ${playing ? "opacity-0" : "opacity-100"
+                    }`}
+            />
 
             <div className="absolute inset-x-3 top-3 flex items-center justify-between font-body text-[10px] font-medium uppercase tracking-[0.12em] text-brand-cream xl:text-[11px]">
                 <span className="flex items-center gap-1.5 rounded-full bg-brand-black/60 px-2.5 py-1 backdrop-blur">
@@ -223,7 +226,10 @@ function ServiceCard({ service, index, className }: { service: Service; index: n
                 </>
             )}
 
-            <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4 xl:gap-2.5 xl:p-5">
+            <div
+                className={`absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4 transition-all duration-500 xl:gap-2.5 xl:p-5 ${playing ? "pointer-events-none translate-y-4 opacity-0" : "translate-y-0 opacity-100"
+                    }`}
+            >
                 <div className="flex items-baseline gap-2.5">
                     <span className="font-body text-[10px] font-semibold text-brand-gold xl:text-[12px]">
                         {String(index + 1).padStart(2, "0")}
@@ -272,6 +278,7 @@ export default function WhatWeDo({ services = SERVICES }: { services?: Service[]
             >
                 <div className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-brand-brown/25 blur-3xl" />
 
+                {/* Header */}
                 <div className={`relative flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between ${show}`}>
                     <div>
                         <div className="flex items-center gap-3">
