@@ -114,7 +114,10 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
     };
 
     return (
-        <section id="next-guest" className={`relative py-7 lg:py-9 ${PAGE_GUTTER}`}>
+        <section
+            id="next-guest"
+            className={`relative overflow-x-clip pt-4 pb-10 sm:pt-6 sm:pb-12 lg:pt-6 lg:pb-14 ${PAGE_GUTTER}`}
+        >
             <style>{`
                 @keyframes guest-eq { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
                 @media (prefers-reduced-motion: reduce) {
@@ -123,12 +126,17 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
                 }
             `}</style>
 
-            <div className="grid items-center gap-12 lg:grid-cols-2 lg:items-stretch lg:gap-14">
+            {/*
+              Max-width wrapper: content aur images ko ek saath center me rakhta hai,
+              taa ke bari screens par beech me khaali gap na bane.
+            */}
+            <div className="mx-auto grid w-full max-w-[1240px] items-center gap-12 sm:gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-10 xl:gap-16 2xl:max-w-[1320px]">
+                {/* ---------- Content ---------- */}
                 <div
                     ref={text.ref}
-                    className={`max-w-[620px] lg:self-center ${text.inView ? "animate-fade-up" : "opacity-0"}`}
+                    className={`mx-auto w-full max-w-[620px] lg:mx-0 lg:max-w-none ${text.inView ? "animate-fade-up" : "opacity-0"}`}
                 >
-                    <span className="inline-flex items-center gap-2 rounded-full border border-brand-black/15 bg-white/60 px-4 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-black">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-brand-black/15 bg-white/60 px-3.5 py-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.16em] text-brand-black sm:px-4 sm:text-[11px] sm:tracking-[0.18em]">
                         <span className="relative flex h-2 w-2">
                             <span className="guest-anim absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
                             <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
@@ -137,10 +145,10 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
                     </span>
 
                     <h2 className="mt-5 font-heading uppercase leading-[0.92] text-brand-black">
-                        <span className="block text-[28px] sm:text-[34px] xl:text-[40px]">
+                        <span className="block text-[24px] min-[400px]:text-[28px] sm:text-[34px] lg:text-[32px] xl:text-[40px]">
                             Got A Story Worth Telling?
                         </span>
-                        <span className="mt-1 block text-[52px] sm:text-[68px] xl:text-[84px]">
+                        <span className="mt-1 block text-[44px] min-[400px]:text-[52px] sm:text-[68px] lg:text-[64px] xl:text-[84px]">
                             Take The{" "}
                             <span className="relative inline-block text-brand-brown">
                                 Mic.
@@ -162,7 +170,7 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
                         </span>
                     </h2>
 
-                    <p className="mt-5 font-body text-[13px] leading-relaxed text-brand-black/80 xl:text-[15px]">
+                    <p className="mt-5 max-w-[560px] font-body text-[14px] leading-relaxed text-brand-black/80 xl:text-[15px]">
                         We&apos;re always looking for founders, creators and everyday people with stories
                         that stick. Drop your details and our producers will reach out to plan your
                         episode.
@@ -170,9 +178,9 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
 
                     <form
                         onSubmit={handleSubmit}
-                        className="mt-8 flex flex-col gap-1 rounded-[26px] border border-brand-black/10 bg-white/70 p-2 shadow-[0_18px_40px_-20px_rgba(29,22,17,0.35)] backdrop-blur sm:flex-row sm:items-center sm:rounded-full"
+                        className="mt-8 flex w-full max-w-[600px] flex-col gap-1 rounded-[26px] border border-brand-black/10 bg-white/70 p-2 shadow-[0_18px_40px_-20px_rgba(29,22,17,0.35)] backdrop-blur sm:flex-row sm:items-center sm:rounded-full"
                     >
-                        <label className="flex h-[48px] min-w-0 flex-1 items-center gap-3 rounded-full px-4 transition-colors focus-within:bg-brand-black/5">
+                        <label className="flex h-[48px] min-w-0 flex-1 items-center gap-3 rounded-full px-4 transition-colors focus-within:bg-brand-black/5 lg:gap-2.5 lg:px-3.5 xl:gap-3 xl:px-4">
                             <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-brand-brown" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                 <circle cx="12" cy="8" r="4" />
                                 <path d="M4 21a8 8 0 0 1 16 0" />
@@ -182,12 +190,13 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
                                 name="name"
                                 placeholder="Your name"
                                 aria-label="Your name"
+                                autoComplete="name"
                                 required
-                                className="w-full min-w-0 bg-transparent font-body text-[13px] text-brand-black outline-none placeholder:text-brand-black/45"
+                                className="w-full min-w-0 bg-transparent font-body text-[14px] text-brand-black outline-none placeholder:text-brand-black/45 sm:text-[13px]"
                             />
                         </label>
-                        <span className="hidden h-6 w-px bg-brand-black/15 sm:block" />
-                        <label className="flex h-[48px] min-w-0 flex-1 items-center gap-3 rounded-full px-4 transition-colors focus-within:bg-brand-black/5">
+                        <span className="mx-4 h-px bg-brand-black/10 sm:mx-0 sm:h-6 sm:w-px sm:bg-brand-black/15" />
+                        <label className="flex h-[48px] min-w-0 flex-1 items-center gap-3 rounded-full px-4 transition-colors focus-within:bg-brand-black/5 lg:gap-2.5 lg:px-3.5 xl:gap-3 xl:px-4">
                             <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-brand-brown" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                 <rect x="3" y="5" width="18" height="14" rx="2" />
                                 <path d="m3 7 9 6 9-6" />
@@ -197,13 +206,14 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
                                 name="email"
                                 placeholder="Email address"
                                 aria-label="Email address"
+                                autoComplete="email"
                                 required
-                                className="w-full min-w-0 bg-transparent font-body text-[13px] text-brand-black outline-none placeholder:text-brand-black/45"
+                                className="w-full min-w-0 bg-transparent font-body text-[14px] text-brand-black outline-none placeholder:text-brand-black/45 sm:text-[13px]"
                             />
                         </label>
                         <button
                             type="submit"
-                            className="group flex h-[48px] shrink-0 items-center justify-between gap-3 whitespace-nowrap rounded-full bg-brand-brown pl-6 pr-1.5 font-body text-[12px] font-semibold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark xl:text-[13px]"
+                            className="group mt-1 flex h-[48px] w-full shrink-0 items-center justify-between gap-3 whitespace-nowrap rounded-full bg-brand-brown pl-6 pr-1.5 font-body text-[12px] font-semibold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark sm:mt-0 sm:w-auto lg:pl-5 xl:pl-6 xl:text-[13px]"
                         >
                             Apply Now
                             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 transition-transform duration-300 group-hover:rotate-45">
@@ -214,30 +224,31 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
                         </button>
                     </form>
 
-                    <p role="status" className="mt-3 h-5 pl-4 font-body text-[12px] text-brand-brown">
+                    <p role="status" className="mt-3 min-h-5 pl-4 font-body text-[12px] text-brand-brown">
                         {sent ? "Thanks! Our producers will be in touch soon." : ""}
                     </p>
 
-                    <ol className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+                    <ol className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-3 sm:gap-x-5">
                         {STEPS.map((s, i) => (
-                            <li key={s.no} className="flex items-center gap-5">
+                            <li key={s.no} className="flex items-center gap-4 sm:gap-5">
                                 <span className="flex items-baseline gap-2">
-                                    <span className="font-heading text-[22px] leading-none text-brand-brown">{s.no}</span>
-                                    <span className="font-body text-[12px] font-medium uppercase tracking-wider text-brand-black xl:text-[13px]">
+                                    <span className="font-heading text-[20px] leading-none text-brand-brown sm:text-[22px]">{s.no}</span>
+                                    <span className="font-body text-[11px] font-medium uppercase tracking-wider text-brand-black sm:text-[12px] xl:text-[13px]">
                                         {s.label}
                                     </span>
                                 </span>
-                                {i < STEPS.length - 1 && <span className="h-px w-8 bg-brand-black/25" />}
+                                {i < STEPS.length - 1 && (
+                                    <span className="h-px w-5 bg-brand-black/25 sm:w-8" />
+                                )}
                             </li>
                         ))}
                     </ol>
                 </div>
 
-                <div className="relative lg:[container-type:size]">
-                    <div
-                        ref={art.ref}
-                        className="relative mx-auto aspect-[360/324] w-full max-w-[520px] lg:absolute lg:right-0 lg:top-1/2 lg:w-[min(100cqw,120cqh)] lg:max-w-none lg:-translate-y-1/2"
-                    >
+                {/* ---------- Art ---------- */}
+                {/* pt: top-left photo ka sar shape se upar nikalta hai, us ke liye jagah */}
+                <div className="mx-auto w-full max-w-[400px] pt-[9%] sm:max-w-[480px] lg:pt-[4%] lg:mx-0 lg:max-w-[500px] lg:justify-self-end xl:max-w-[560px]">
+                    <div ref={art.ref} className="relative aspect-[360/324] w-full">
                         {SHAPES.map((s, i) => {
                             const delay = i * SHAPE_DELAY;
                             return (
@@ -279,7 +290,7 @@ export default function NextGuest({ images = DEFAULT_IMAGES, onSubmit }: Props) 
 
                         <div
                             aria-hidden="true"
-                            className="guest-move absolute left-[58.6%] top-[70.7%] flex h-[29.3%] w-[41.4%] items-center gap-[1.5px]"
+                            className="guest-move absolute left-[58.6%] top-[70.7%] flex h-[29.3%] w-[41.4%] items-center gap-[1px] sm:gap-[1.5px]"
                             style={{
                                 opacity: landed ? 1 : 0,
                                 transition: "opacity 600ms ease 200ms",

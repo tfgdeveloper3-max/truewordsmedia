@@ -33,7 +33,14 @@ export default function Hero() {
 
             <div className="relative z-10 grid w-full items-center gap-10 lg:grid-cols-2 lg:gap-8">
                 <div>
-                    <span className="inline-block animate-fade-up rounded-full border border-brand-black px-4 py-1.5 font-body text-[10px] font-medium uppercase tracking-wide text-brand-black [animation-delay:200ms] sm:text-[11px] 2xl:text-[13px]">
+                    <span className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-brand-black px-4 py-1.5 font-body text-[10px] font-medium uppercase tracking-wide text-brand-black [animation-delay:200ms] sm:text-[11px] 2xl:text-[13px]">
+                        <style>{`
+                          @keyframes rec-blink { 0%, 55% { opacity: 1; } 70%, 90% { opacity: 0.15; } 100% { opacity: 1; } }
+                         `}</style>
+                        <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
+                            <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 motion-safe:animate-ping" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500 motion-safe:animate-[rec-blink_1.2s_ease-in-out_infinite]" />
+                        </span>
                         Motion Designer &amp; Creative Technologist
                     </span>
 

@@ -10,6 +10,7 @@ import WhatWeDo from "./components/landingpage/WhatweDo";
 import Footer from "./components/Footer";
 import PodcastPlayer from "./components/landingpage/PodcastPlayer";
 import NextGuest from "./components/landingpage/Guest";
+import BrandMarquee from "./components/landingpage/BrandMarque";
 
 export default function App() {
   useEffect(() => initSmoothScroll(), []);
@@ -18,6 +19,7 @@ export default function App() {
     <main className="min-h-screen bg-brand-cream">
       <Navbar />
       <Hero />
+      <BrandMarquee />
       <ComingSoon />
       <LatestPodcast />
       <OurHost />
