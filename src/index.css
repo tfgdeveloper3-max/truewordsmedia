@@ -1,29 +1,18 @@
 @import "tailwindcss";
 
-/* Local fonts are loaded in src/lib/loadFonts.ts (called from main.tsx) */
-
-/* ---------- Design tokens ---------- */
 @theme {
   --color-brand-brown: #a4512a;
   --color-brand-black: #1c170d;
   --color-brand-olive: #5d5234;
-  /* Coming Soon section */
   --color-brand-white: #ffffff;
   --color-brand-button: #af5633;
   --color-brand-dark: #1c150d;
-  /* What We Do background */
   --color-brand-cream: #fbf2e3;
-  /* Website background */
   --color-brand-gold: #e7c387;
-  /* Button arrow background */
   --color-brand-nav: #1f1a14;
-  /* Navbar background */
   --color-brand-taupe: #a39c88;
-  /* Arch behind the listeners mic */
   --color-brand-star: #f0a81c;
-  /* Rating stars */
   --color-brand-footer: #f9e9d1;
-  /* Footer background */
 
   --font-body: "Montserrat", sans-serif;
   --font-heading: "Scaffold Heavy", "Impact", "Arial Narrow", sans-serif;
@@ -32,7 +21,6 @@
   --font-deadjim: "Deadjim", cursive;
 }
 
-/* ---------- Page-load animations ---------- */
 @theme {
   --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-fade-down: fade-down 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -51,6 +39,29 @@
 
     50% {
       transform: scaleY(1);
+    }
+  }
+
+  --animate-flip-top: flip-top 0.3s ease-in both;
+  --animate-flip-bottom: flip-bottom 0.3s ease-out 0.3s both;
+
+  @keyframes flip-top {
+    from {
+      transform: rotateX(0deg);
+    }
+
+    to {
+      transform: rotateX(-90deg);
+    }
+  }
+
+  @keyframes flip-bottom {
+    from {
+      transform: rotateX(90deg);
+    }
+
+    to {
+      transform: rotateX(0deg);
     }
   }
 
@@ -124,7 +135,6 @@
   }
 }
 
-/* ---------- Base ---------- */
 html,
 body {
   background-color: var(--color-brand-cream);
@@ -132,12 +142,10 @@ body {
   font-family: var(--font-body);
 }
 
-/* Headings: never synthesize bold/italic (this is what made the heading look too heavy) */
 .font-heading {
   font-synthesis: none;
 }
 
-/* ---------- Lenis smooth scroll ---------- */
 html.lenis,
 html.lenis body {
   height: auto;

@@ -10,7 +10,6 @@ const NAV_LINKS = [
     { label: "Upcoming Podcast", href: "#upcoming-podcast" },
 ];
 
-/** Shared side padding so the hero lines up exactly with the navbar edges */
 export const PAGE_GUTTER = "px-4 sm:px-6 lg:px-10 xl:px-14";
 
 export const ArrowIcon = ({ className = "" }: { className?: string }) => (
@@ -33,7 +32,6 @@ export default function Navbar() {
     const [active, setActive] = useState("#home");
     const [open, setOpen] = useState(false);
 
-    // Highlight the link of the section currently in view
     useEffect(() => {
         const sections = NAV_LINKS.map((l) => document.querySelector(l.href)).filter(
             Boolean
@@ -80,7 +78,7 @@ export default function Navbar() {
                                 <a
                                     href={link.href}
                                     onClick={(e) => handleClick(e, link.href)}
-                                    className={`whitespace-nowrap font-body text-[13px] uppercase tracking-wide text-white transition-colors 2xl:text-[15px] hover:text-brand-gold ${isActive ? "font-bold italic" : "font-normal"
+                                    className={`whitespace-nowrap font-body text-[13px] uppercase tracking-wide transition-colors 2xl:text-[15px] hover:text-brand-gold ${isActive ? "font-bold italic text-brand-gold" : "font-normal text-white"
                                         }`}
                                 >
                                     {link.label}
@@ -133,7 +131,7 @@ export default function Navbar() {
                             <a
                                 href={link.href}
                                 onClick={(e) => handleClick(e, link.href)}
-                                className={`block px-8 py-3 font-body text-sm uppercase tracking-wide text-white hover:text-brand-gold ${active === link.href ? "font-bold italic" : ""
+                                className={`block px-8 py-3 font-body text-sm uppercase tracking-wide transition-colors hover:text-brand-gold ${active === link.href ? "font-bold italic text-brand-gold" : "text-white"
                                     }`}
                             >
                                 {link.label}

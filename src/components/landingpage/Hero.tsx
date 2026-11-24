@@ -16,7 +16,7 @@ export default function Hero() {
     return (
         <section
             id="home"
-            className={`relative flex min-h-[100svh] items-center overflow-hidden bg-brand-dark pt-32 pb-16 sm:pt-36 lg:pt-[204px] lg:pb-16 ${PAGE_GUTTER}`}
+            className={`relative flex min-h-[100svh] items-center overflow-hidden bg-brand-dark pt-32 pb-16 sm:pt-36 lg:pt-[174px] lg:pb-16 ${PAGE_GUTTER}`}
         >
             <video
                 className="pointer-events-none absolute inset-0 h-full w-full bg-brand-dark object-cover"
@@ -38,13 +38,13 @@ export default function Hero() {
                     </span>
 
                     <h1 className="mt-[1.5vh] font-heading font-normal uppercase leading-[0.95] tracking-[0.03em] text-brand-black">
-                        <span className="block animate-fade-up text-[15vw] [animation-delay:350ms] sm:text-[13vw] lg:text-[min(9.5vw,15vh)]">
+                        <span className="block animate-fade-up text-[14vw] [animation-delay:350ms] sm:text-[12vw] lg:text-[min(8.5vw,13vh)]">
                             I Bring
                         </span>
-                        <span className="block animate-fade-up text-[22vw] text-brand-brown [animation-delay:500ms] sm:text-[19vw] lg:text-[min(14.5vw,23vh)]">
+                        <span className="block animate-fade-up text-[22vw] text-brand-brown [animation-delay:500ms] sm:text-[17vw] lg:text-[min(13.5vw,21vh)]">
                             Idea To
                         </span>
-                        <span className="block animate-fade-up text-[12vw] [animation-delay:650ms] sm:text-[10vw] lg:text-[min(7.8vw,11.5vh)]">
+                        <span className="block animate-fade-up text-[14vw] [animation-delay:650ms] sm:text-[9vw] lg:text-[min(7vw,11.5vh)]">
                             Life In Motion
                         </span>
                     </h1>
