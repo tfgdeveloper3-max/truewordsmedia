@@ -100,7 +100,7 @@ export default function Hero() {
                                     key={src}
                                     src={src}
                                     alt={`Reviewer ${i + 1}`}
-                                    className="h-12 w-12 rounded-full border-2 border-brand-cream object-cover 2xl:h-14 2xl:w-14"
+                                    className="h-12 w-12 rounded-full border-2 border-neutral-700 object-cover 2xl:h-14 2xl:w-14"
                                 />
                             ))}
                         </div>
