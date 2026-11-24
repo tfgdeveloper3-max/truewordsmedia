@@ -4,9 +4,6 @@ import { SocialIcon, type SocialLink } from "../components/SocialIcon";
 import { scrollToSection } from "@/lib/smoothScroll";
 import { useInView } from "@/lib/useView";
 
-const INTRO =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dictum aliquet accumsan porta lectus ridiculus in mattis. Netus sodales in volutpat ullamcorper amet adipiscing fermentum.";
-
 const ABOUT =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dictum aliquet accumsan porta lectus ridiculus in mattis. Netus sodales in volutpat ullamcorper amet adipiscing fermentum.";
 
@@ -45,7 +42,11 @@ const handleLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     }
 };
 
-function bottomPaddingRatio(img: HTMLImageElement): number {
+type MicBounds = { top: number; bottom: number; right: number };
+
+const NO_PADDING: MicBounds = { top: 0, bottom: 0, right: 0 };
+
+function transparentPadding(img: HTMLImageElement): MicBounds {
     try {
         const w = img.naturalWidth;
         const h = img.naturalHeight;
@@ -53,59 +54,52 @@ function bottomPaddingRatio(img: HTMLImageElement): number {
         canvas.width = w;
         canvas.height = h;
         const ctx = canvas.getContext("2d");
-        if (!ctx) return 0;
+        if (!ctx) return NO_PADDING;
         ctx.drawImage(img, 0, 0);
         const data = ctx.getImageData(0, 0, w, h).data;
-        for (let y = h - 1; y >= 0; y--) {
+        let minY = h;
+        let maxY = -1;
+        let maxX = -1;
+        for (let y = 0; y < h; y++) {
             for (let x = 0; x < w; x++) {
-                if (data[(y * w + x) * 4 + 3] > 10) return (h - 1 - y) / h;
+                if (data[(y * w + x) * 4 + 3] > 10) {
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                    if (x > maxX) maxX = x;
+                }
             }
         }
+        if (maxY < 0) return NO_PADDING;
+        return {
+            top: minY / h,
+            bottom: (h - 1 - maxY) / h,
+            right: (w - 1 - maxX) / w,
+        };
     } catch {
-       
+        return NO_PADDING;
     }
-    return 0;
 }
 
 export default function Footer() {
-    const [micOffset, setMicOffset] = useState(0);
+    const [mic, setMic] = useState<MicBounds>(NO_PADDING);
+    const micContent = Math.max(0.2, 1 - mic.top - mic.bottom);
     const { ref, inView } = useInView<HTMLDivElement>(0.15);
     const show = inView ? "animate-fade-up" : "opacity-0";
 
     return (
         <footer id="contact" className="relative overflow-hidden bg-brand-dark">
             <div ref={ref} className={`relative ${PAGE_GUTTER}`}>
-                <div className={`flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between lg:py-12 ${show}`}>
-                    <img
-                        src="/images/Logo.png"
-                        alt="True Words Media"
-                        className="h-24 w-24 rounded-full object-cover lg:h-28 lg:w-28"
-                    />
-                    <div className="max-w-md lg:mr-[5%] xl:max-w-lg">
-                        <p className="font-body text-[12px] leading-relaxed text-white/70 xl:text-[14px]">
-                            {INTRO}
-                        </p>
-                        <a
-                            href="#upcoming-podcast"
-                            onClick={(e) => handleLink(e, "#upcoming-podcast")}
-                            className="mt-5 inline-block rounded-full bg-brand-button px-8 py-3 font-body text-[12px] font-medium uppercase tracking-wide text-white transition-colors hover:bg-brand-brown xl:text-[13px]"
-                        >
-                            Get Started
-                        </a>
-                    </div>
-                </div>
-
-                <hr className="border-white/15" />
-
                 <div className="grid gap-10 py-10 sm:grid-cols-2 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-[minmax(0,32%)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,24%)] lg:gap-8 lg:py-12">
-                    <div className={`[animation-delay:150ms] ${show}`}>
-                        <h3 className="font-body text-[18px] font-medium text-white xl:text-[22px]">
-                            About True Words Media
-                        </h3>
-                        <p className="mt-4 font-body text-[12px] leading-relaxed text-white/70 xl:text-[13px]">
+                    <div className={`sm:col-span-2 md:col-span-1 ${show}`}>
+                        <img
+                            src="/images/Logo.png"
+                            alt="True Words Media"
+                            className="h-20 w-20 object-contain lg:h-24 lg:w-24"
+                        />
+                        <p className="mt-6 max-w-sm font-body text-[12px] leading-relaxed text-white/80 xl:text-[13px]">
                             {ABOUT}
                         </p>
-                        <div className="mt-6 flex items-center gap-6">
+                        <div className="mt-8 flex items-center gap-6">
                             {SOCIALS.map((s) => (
                                 <a
                                     key={s.name}
@@ -124,12 +118,12 @@ export default function Footer() {
                     {LINK_COLUMNS.map((col, i) => (
                         <div
                             key={col.title}
-                            className={`lg:pl-[25%] ${i === 0 ? "[animation-delay:250ms]" : "[animation-delay:350ms]"} ${show}`}
+                            className={`md:pt-6 lg:pl-[25%] ${i === 0 ? "[animation-delay:150ms]" : "[animation-delay:250ms]"} ${show}`}
                         >
                             <h4 className="font-body text-[12px] font-bold text-white xl:text-[14px]">
                                 {col.title}
                             </h4>
-                            <ul className="mt-5 space-y-4">
+                            <ul className="mt-6 space-y-4">
                                 {col.links.map((link, j) => (
                                     <li key={j}>
                                         <a
@@ -146,7 +140,7 @@ export default function Footer() {
                     ))}
                 </div>
 
-                <hr className="border-white/15" />
+                <hr className="border-white/30" />
 
                 <p className="py-5 text-center font-body text-[11px] text-white xl:text-[13px]">
                     © Copyright {new Date().getFullYear()}, All Rights Reserved
@@ -157,10 +151,12 @@ export default function Footer() {
                 src="/images/FooterMic.png"
                 alt=""
                 aria-hidden="true"
-                onLoad={(e) => setMicOffset(bottomPaddingRatio(e.currentTarget))}
-                style={{ translate: `0 ${micOffset * 100}%` }}
-                className={`pointer-events-none absolute bottom-0 right-0 hidden h-[min(88%,38vw)] w-auto object-contain object-bottom lg:block ${inView ? "animate-slide-from-right [animation-delay:300ms]" : "opacity-0"
-                    }`}
+                onLoad={(e) => setMic(transparentPadding(e.currentTarget))}
+                style={{
+                    height: `calc(100% / ${micContent})`,
+                    translate: `${mic.right * 100}% ${mic.bottom * 100}%`,
+                }}
+                className={`pointer-events-none absolute bottom-0 right-0 hidden w-auto max-w-none lg:block ${inView ? "animate-slide-from-right [animation-delay:300ms]" : "opacity-0"}`}
             />
         </footer>
     );

@@ -70,7 +70,7 @@ export default function Reviews({ reviews = REVIEWS }: { reviews?: Review[] }) {
     const mic = useInView<HTMLDivElement>(0.2);
 
     return (
-        <section id="reviews" className={`overflow-x-clip py-16 lg:py-24 ${PAGE_GUTTER}`}>
+        <section id="reviews" className={`overflow-x-clip py-7 lg:py-9 ${PAGE_GUTTER}`}>
             <div
                 ref={head.ref}
                 className={`mx-auto max-w-3xl text-center ${head.inView ? "animate-fade-up" : "opacity-0"}`}

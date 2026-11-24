@@ -64,7 +64,7 @@ export default function LatestPodcast({ episodes = EPISODES }: { episodes?: Epis
     const hasMore = visible < episodes.length;
 
     return (
-        <section id="latest-podcast" className={`py-16 lg:py-24 ${PAGE_GUTTER}`}>
+        <section id="latest-podcast" className={`py-7 lg:py-9 ${PAGE_GUTTER}`}>
             <div
                 ref={ref}
                 className={`mx-auto max-w-3xl text-center ${inView ? "animate-fade-up" : "opacity-0"}`}

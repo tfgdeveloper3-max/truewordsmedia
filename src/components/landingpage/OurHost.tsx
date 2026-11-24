@@ -31,7 +31,7 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
     };
 
     return (
-        <section id="our-hosts" className={`py-16 lg:py-20 ${PAGE_GUTTER}`}>
+        <section id="our-hosts" className={`py-7 lg:py-9 ${PAGE_GUTTER}`}>
             <div
                 ref={ref}
                 className="grid items-center gap-8 rounded-[20px] bg-brand-dark p-4 text-white sm:p-5 md:grid-cols-[minmax(0,40%)_1fr] md:gap-8 lg:grid-cols-[minmax(0,32%)_1fr_auto] lg:gap-10 xl:gap-14"

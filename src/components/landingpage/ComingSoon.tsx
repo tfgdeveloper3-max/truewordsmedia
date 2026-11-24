@@ -89,7 +89,7 @@ export default function ComingSoon({
     "font-body text-sm font-medium uppercase tracking-[0.3em] text-white/80 md:text-[1.1cqw]";
 
   return (
-    <section id="upcoming-podcast" className={`py-16 lg:py-24 ${PAGE_GUTTER}`}>
+    <section id="upcoming-podcast" className={`py-10 lg:py-14 ${PAGE_GUTTER}`}>
       <div
         ref={ref}
         className="@container relative isolate flex flex-col items-center overflow-hidden rounded-[20px] bg-brand-dark px-6 pt-10 text-white md:block md:aspect-[909/397] md:p-0"
@@ -162,7 +162,7 @@ export default function ComingSoon({
           <div
             className={`text-center md:absolute md:left-[12.5%] md:top-[76%] md:-translate-x-1/2 ${reveal(500)}`}
           >
-            <p className="font-capetown text-xl leading-none md:text-[2.1cqw]">Hosted By</p>
+            <p className="capetown-font text-xl leading-none md:text-[2.1cqw]">Hosted By</p>
             <p className="mt-1 font-heading text-xl uppercase tracking-[0.03em] sm:text-2xl md:mt-[0.4cqw] md:whitespace-nowrap md:text-[2.6cqw]">
               {host}
             </p>
@@ -170,7 +170,7 @@ export default function ComingSoon({
           <div
             className={`text-center md:absolute md:left-[88%] md:top-[76%] md:-translate-x-1/2 ${reveal(600)}`}
           >
-            <p className="font-capetown text-xl leading-none md:text-[2.1cqw]">Guest Star</p>
+            <p className="capetown-font text-xl leading-none md:text-[2.1cqw]">Guest Star</p>
             <p className="mt-1 font-heading text-xl uppercase tracking-[0.03em] sm:text-2xl md:mt-[0.4cqw] md:whitespace-nowrap md:text-[2.6cqw]">
               {guest}
             </p>

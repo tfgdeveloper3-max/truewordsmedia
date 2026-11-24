@@ -8,7 +8,7 @@ import { PAGE_GUTTER } from "../Navbar";
 export const SHOW = {
     title: "True Words Podcast",
     author: "Rhea Monroe",
-    cover: "/images/Hero.png",
+    cover: "/images/Podcast-BG.jpg",
     description:
         "Honest conversations about stories, creativity and the people behind them. New episodes every week.",
 };
@@ -222,7 +222,7 @@ export default function PodcastPlayer({ episodes = EPISODES }: { episodes?: Epis
     if (!ep) return null;
 
     return (
-        <section id="listen" className={`py-16 lg:py-24 ${PAGE_GUTTER}`}>
+        <section id="listen" className={`py-7 lg:py-9 ${PAGE_GUTTER}`}>
             <audio
                 ref={audioRef}
                 src={ep.audio}

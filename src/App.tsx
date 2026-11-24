@@ -7,9 +7,9 @@ import ComingSoon from "./components/landingpage/ComingSoon";
 import OurHost from "./components/landingpage/OurHost";
 import Reviews from "./components/landingpage/Reviews";
 import WhatWeDo from "./components/landingpage/WhatweDo";
-import Team from "./components/landingpage/Team";
 import Footer from "./components/Footer";
 import PodcastPlayer from "./components/landingpage/PodcastPlayer";
+import NextGuest from "./components/landingpage/Guest";
 
 export default function App() {
   useEffect(() => initSmoothScroll(), []);
@@ -24,7 +24,7 @@ export default function App() {
       <PodcastPlayer />
       <Reviews />
       <WhatWeDo />
-      <Team />
+      <NextGuest />
       <Footer />
     </main>
   );
