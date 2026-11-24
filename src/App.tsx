@@ -18,9 +18,9 @@ export default function App() {
     <main className="min-h-screen bg-brand-cream">
       <Navbar />
       <Hero />
-      <OurHost />
-      <LatestPodcast />
       <ComingSoon />
+      <LatestPodcast />
+      <OurHost />
       <PodcastPlayer />
       <Reviews />
       <WhatWeDo />
