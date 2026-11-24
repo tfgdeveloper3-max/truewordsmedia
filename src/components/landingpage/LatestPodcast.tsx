@@ -12,15 +12,15 @@ function EpisodeCard({ ep }: { ep: Episode }) {
     return (
         <article
             ref={ref}
-            className={`grid items-center gap-6 md:grid-cols-[minmax(0,30%)_1fr] lg:grid-cols-[minmax(0,30%)_1fr_auto] lg:gap-10 ${inView ? "animate-fade-up" : "opacity-0"
+            className={`grid items-center gap-6 md:grid-cols-[minmax(0,28%)_1fr] lg:grid-cols-[minmax(0,28%)_1fr_auto] lg:gap-10 ${inView ? "animate-fade-up" : "opacity-0"
                 }`}
         >
-            <div className="overflow-hidden rounded-[22px]">
+            <div className="relative overflow-hidden rounded-[22px] md:h-full md:min-h-[200px] md:self-stretch">
                 <img
                     src={ep.image}
                     alt={ep.title}
                     loading="lazy"
-                    className="aspect-[265/200] w-full object-cover transition-transform duration-500 hover:scale-105"
+                    className="aspect-[265/200] w-full object-cover transition-transform duration-500 hover:scale-105 md:absolute md:inset-0 md:aspect-auto md:h-full"
                 />
             </div>
 
@@ -40,7 +40,7 @@ function EpisodeCard({ ep }: { ep: Episode }) {
                 </div>
             </div>
 
-            <ul className="space-y-4 border-brand-black/60 font-body text-[12px] font-semibold text-brand-black md:col-span-2 lg:col-span-1 lg:min-w-[230px] lg:self-stretch lg:border-l lg:py-10 lg:pl-6 xl:min-w-[280px] xl:text-[13px]">
+            <ul className="space-y-4 border-brand-black/60 font-body text-[12px] font-semibold text-brand-black md:col-span-2 lg:col-span-1 lg:min-w-[230px] lg:self-stretch lg:border-l lg:py-6 lg:pl-6 xl:min-w-[280px] xl:text-[13px]">
                 <li className="flex items-center gap-3">
                     <span className="h-3 w-3 shrink-0 rounded-full bg-brand-brown" />
                     {ep.show}

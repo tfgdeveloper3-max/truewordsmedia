@@ -244,7 +244,7 @@ export default function PodcastPlayer({ episodes = EPISODES }: { episodes?: Epis
                         <img
                             src={SHOW.cover}
                             alt={SHOW.title}
-                            className="h-44 w-44 shrink-0 rounded-xl bg-brand-cream object-contain p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] sm:h-52 sm:w-52 lg:h-60 lg:w-60"
+                            className="h-44 w-44 shrink-0 rounded-xl object-contain p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] sm:h-52 sm:w-52 lg:h-60 lg:w-60"
                         />
                         <div className="min-w-0">
                             <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
