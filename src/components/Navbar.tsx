@@ -10,6 +10,8 @@ const NAV_LINKS = [
     { label: "Upcoming Podcast", href: "#upcoming-podcast" },
 ];
 
+const LOGO_SRC = "/images/NewLogo.png";
+
 export const PAGE_GUTTER = "px-4 sm:px-6 lg:px-10 xl:px-14";
 
 export const ArrowIcon = ({ className = "" }: { className?: string }) => (
@@ -59,18 +61,16 @@ export default function Navbar() {
 
     return (
         <header className={`fixed inset-x-0 top-4 z-50 animate-fade-down sm:top-5 ${PAGE_GUTTER}`}>
-            <nav className="flex w-full items-center justify-between rounded-full bg-brand-nav py-2.5 pl-4 pr-3 shadow-lg sm:py-3 sm:pl-8 sm:pr-4">
-                {/* Logo */}
+            <nav className="flex w-full items-center justify-between rounded-full bg-brand-nav py-2 pl-4 pr-4 shadow-lg sm:pl-8 sm:pr-8 xl:pr-10">
                 <a href="#home" onClick={(e) => handleClick(e, "#home")} className="shrink-0">
                     <img
-                        src="/images/Logo.png"
+                        src={LOGO_SRC}
                         alt="True Words Media"
-                        className="h-11 w-11 rounded-full object-cover sm:h-14 sm:w-14"
+                        className="h-14 w-auto object-contain sm:h-16 xl:h-[72px]"
                     />
                 </a>
 
-                {/* Desktop links */}
-                <ul className="hidden items-center gap-6 xl:flex 2xl:gap-12">
+                <ul className="hidden items-center gap-6 xl:flex 2xl:gap-10">
                     {NAV_LINKS.map((link) => {
                         const isActive = active === link.href;
                         return (
@@ -88,39 +88,23 @@ export default function Navbar() {
                     })}
                 </ul>
 
-                <div className="flex items-center gap-2">
-                    {/* CTA */}
-                    <a
-                        href="#contact"
-                        onClick={(e) => handleClick(e, "#contact")}
-                        className="group flex items-center gap-3 rounded-full bg-brand-button py-2 pl-5 pr-2 font-body text-[12px] font-medium uppercase tracking-wide text-white transition-colors hover:bg-brand-brown sm:py-2.5 sm:text-[13px]"
-                    >
-                        Let&apos;s Talk
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-gold text-brand-black transition-transform duration-300 group-hover:rotate-45 sm:h-7 sm:w-7">
-                            <ArrowIcon className="h-3.5 w-3.5" />
-                        </span>
-                    </a>
-
-                    {/* Mobile toggle */}
-                    <button
-                        type="button"
-                        onClick={() => setOpen((o) => !o)}
-                        aria-label="Toggle menu"
-                        aria-expanded={open}
-                        className="flex h-10 w-10 items-center justify-center rounded-full text-white xl:hidden"
-                    >
-                        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-                            {open ? (
-                                <path d="M6 6l12 12M18 6 6 18" />
-                            ) : (
-                                <path d="M4 7h16M4 12h16M4 17h16" />
-                            )}
-                        </svg>
-                    </button>
-                </div>
+                <button
+                    type="button"
+                    onClick={() => setOpen((o) => !o)}
+                    aria-label="Toggle menu"
+                    aria-expanded={open}
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-white xl:hidden"
+                >
+                    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                        {open ? (
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        ) : (
+                            <path d="M4 7h16M4 12h16M4 17h16" />
+                        )}
+                    </svg>
+                </button>
             </nav>
 
-            {/* Mobile menu */}
             <div
                 className={`mt-3 w-full overflow-hidden rounded-3xl bg-brand-nav transition-all duration-300 xl:hidden ${open ? "max-h-96 opacity-100" : "pointer-events-none max-h-0 opacity-0"
                     }`}

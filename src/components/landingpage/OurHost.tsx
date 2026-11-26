@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import { scrollToSection } from "@/lib/smoothScroll";
 import { useInView } from "@/lib/useView";
 import { ArrowIcon, PAGE_GUTTER } from "../Navbar";
@@ -19,9 +20,104 @@ const DoubleCheck = () => (
     </svg>
 );
 
+const SoundIcon = ({ muted }: { muted: boolean }) => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-4 w-4"
+        aria-hidden="true"
+    >
+        <path d="M11 5L6 9H2v6h4l5 4V5z" />
+        {muted ? (
+            <>
+                <path d="M23 9l-6 6" />
+                <path d="M17 9l6 6" />
+            </>
+        ) : (
+            <>
+                <path d="M15.5 8.5a5 5 0 010 7" />
+                <path d="M19 5a10 10 0 010 14" />
+            </>
+        )}
+    </svg>
+);
+
 export default function OurHost({ host = HOST }: { host?: Host }) {
     const { ref, inView } = useInView<HTMLDivElement>(0.25);
     const show = inView ? "animate-fade-up" : "opacity-0";
+
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const videoInViewRef = useRef(false);   
+    const unlockedRef = useRef(false);   
+    const wantSoundRef = useRef(true); 
+    const [muted, setMuted] = useState(true);
+
+    const applyAudio = useCallback(() => {
+        const v = videoRef.current;
+        if (!v) return;
+
+        const shouldHaveSound =
+            videoInViewRef.current && unlockedRef.current && wantSoundRef.current;
+
+        v.muted = !shouldHaveSound;
+        setMuted(v.muted);
+
+        if (v.paused) {
+            v.play().catch(() => {
+                v.muted = true;
+                setMuted(true);
+                v.play().catch(() => { });
+            });
+        }
+    }, []);
+
+    useEffect(() => {
+        const v = videoRef.current;
+        if (!v) return;
+        v.muted = true;
+        v.play().catch(() => { });
+    }, [host.video]);
+
+    useEffect(() => {
+        const events = ["pointerdown", "keydown", "touchstart"] as const;
+        const remove = () =>
+            events.forEach((e) => window.removeEventListener(e, unlock));
+        function unlock() {
+            unlockedRef.current = true;
+            applyAudio();
+            remove();
+        }
+        events.forEach((e) =>
+            window.addEventListener(e, unlock, { passive: true })
+        );
+        return remove;
+    }, [applyAudio]);
+
+    useEffect(() => {
+        const v = videoRef.current;
+        if (!v) return;
+        const io = new IntersectionObserver(
+            ([entry]) => {
+                videoInViewRef.current = entry.isIntersecting;
+                applyAudio();
+            },
+            { threshold: 0.5 } 
+        );
+        io.observe(v);
+        return () => io.disconnect();
+    }, [applyAudio]);
+
+    const toggleSound = () => {
+        const v = videoRef.current;
+        if (!v) return;
+        unlockedRef.current = true;
+        wantSoundRef.current = v.muted; 
+        applyAudio();
+    };
 
     const handleMore = (e: React.MouseEvent<HTMLAnchorElement>) => {
         if (host.moreLink.startsWith("#")) {
@@ -36,13 +132,30 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
                 ref={ref}
                 className="grid items-center gap-8 rounded-[20px] bg-brand-dark p-4 text-white sm:p-5 md:grid-cols-[minmax(0,40%)_1fr] md:gap-8 lg:grid-cols-[minmax(0,32%)_1fr_auto] lg:gap-10 xl:gap-14"
             >
-                <div className={`overflow-hidden rounded-[16px] border-2 border-white ${show}`}>
-                    <img
-                        src={host.image}
-                        alt={host.name}
-                        loading="lazy"
-                        className="aspect-[288/212] w-full object-cover"
+                <div className={`relative overflow-hidden rounded-[16px] border-2 border-white ${show}`}>
+                    <video
+                        ref={videoRef}
+                        src={host.video}
+                        poster={host.image}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="metadata"
+                        aria-label={host.name}
+                        className="aspect-[288/212] w-full object-fit"
                     />
+
+                    <button
+                        type="button"
+                        onClick={toggleSound}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onKeyDown={(e) => e.stopPropagation()}
+                        aria-label={muted ? "Unmute video" : "Mute video"}
+                        className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70"
+                    >
+                        <SoundIcon muted={muted} />
+                    </button>
                 </div>
 
                 <div className={`px-2 [animation-delay:150ms] lg:px-0 ${show}`}>
