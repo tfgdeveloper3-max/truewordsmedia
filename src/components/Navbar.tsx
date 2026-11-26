@@ -10,7 +10,7 @@ const NAV_LINKS = [
     { label: "Upcoming Podcast", href: "#upcoming-podcast" },
 ];
 
-const LOGO_SRC = "/images/logo.png";
+const LOGO_SRC = "/images/NavLogo.png";
 
 export const PAGE_GUTTER = "px-4 sm:px-6 lg:px-10 xl:px-14";
 

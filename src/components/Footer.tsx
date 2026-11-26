@@ -92,7 +92,7 @@ export default function Footer() {
                 <div className="grid gap-10 py-10 sm:grid-cols-2 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-[minmax(0,32%)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,24%)] lg:gap-8 lg:py-12">
                     <div className={`sm:col-span-2 md:col-span-1 ${show}`}>
                         <img
-                            src="/images/logo.png"
+                            src="/images/FooterLogo.png"
                             alt="True Words Media"
                             className="h-14 w-auto object-contain sm:h-16 xl:h-[72px]"
                         />
