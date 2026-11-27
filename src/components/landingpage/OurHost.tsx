@@ -51,18 +51,29 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
     const show = inView ? "animate-fade-up" : "opacity-0";
 
     const videoRef = useRef<HTMLVideoElement>(null);
-    const videoInViewRef = useRef(false);   
-    const unlockedRef = useRef(false);   
-    const wantSoundRef = useRef(true); 
+    const videoInViewRef = useRef(false);
+    const unlockedRef = useRef(false);
+    const wantSoundRef = useRef(true);
+    const hasStartedRef = useRef(false);
     const [muted, setMuted] = useState(true);
 
     const applyAudio = useCallback(() => {
         const v = videoRef.current;
         if (!v) return;
 
-        const shouldHaveSound =
-            videoInViewRef.current && unlockedRef.current && wantSoundRef.current;
+        if (!videoInViewRef.current) {
+            if (!v.paused) v.pause();
+            v.muted = true;
+            setMuted(true);
+            return;
+        }
 
+        if (!hasStartedRef.current) {
+            hasStartedRef.current = true;
+            v.currentTime = 0;
+        }
+
+        const shouldHaveSound = unlockedRef.current && wantSoundRef.current;
         v.muted = !shouldHaveSound;
         setMuted(v.muted);
 
@@ -79,8 +90,11 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
         const v = videoRef.current;
         if (!v) return;
         v.muted = true;
-        v.play().catch(() => { });
-    }, [host.video]);
+        v.pause();
+        v.currentTime = 0;
+        hasStartedRef.current = false;
+        if (videoInViewRef.current) applyAudio();
+    }, [host.video, applyAudio]);
 
     useEffect(() => {
         const events = ["pointerdown", "keydown", "touchstart"] as const;
@@ -105,7 +119,7 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
                 videoInViewRef.current = entry.isIntersecting;
                 applyAudio();
             },
-            { threshold: 0.5 } 
+            { threshold: 0.5 }
         );
         io.observe(v);
         return () => io.disconnect();
@@ -115,7 +129,7 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
         const v = videoRef.current;
         if (!v) return;
         unlockedRef.current = true;
-        wantSoundRef.current = v.muted; 
+        wantSoundRef.current = v.muted;
         applyAudio();
     };
 
@@ -137,11 +151,10 @@ export default function OurHost({ host = HOST }: { host?: Host }) {
                         ref={videoRef}
                         src={host.video}
                         poster={host.image}
-                        autoPlay
                         loop
                         muted
                         playsInline
-                        preload="metadata"
+                        preload="auto"
                         aria-label={host.name}
                         className="aspect-[288/212] w-full object-fit"
                     />
